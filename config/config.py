@@ -1,27 +1,17 @@
-# config.py
-
-# URL тестируемого сайта
-BASE_URL = "http://localhost:8000/?balance=30000&reserved=20001"
-
-# Таймауты (в секундах)
-WAIT_TIMEOUT = 10  # Имплицитный таймаут для поиска элементов
-PAGE_LOAD_TIMEOUT = 30  # Таймаут загрузки страницы
-SCRIPT_TIMEOUT = 30  # Таймаут выполнения JavaScript
-
 # Настройки браузера (для Microsoft Edge)
-HEADLESS = False  # True — режим «без головы» (без видимого окна)
-BROWSER = "edge"  # Указываем Edge вместо Chrome
-DRIVER_PATH = "./msedgedriver.exe"  # Путь к msedgedriver.exe (если не в PATH)
+HEADLESS = False
+BROWSER = "edge"
+DRIVER_PATH = "./msedgedriver.exe"
 
-# Селекторы элементов UI (CSS-селекторы или XPath)
+# Селекторы элементов UI (CSS‑селекторы или XPath)
 SELECTORS = {
-    "balance_field": "css selector here",  # Пример: ".balance"
-    "reserved_field": "css selector here",  # Пример: ".reserved"
-    "transfer_button": "css selector here",  # Кнопка «Перевести»
-    "card_input": "css selector here",  # Поле для ввода номера карты
-    "amount_input": "css selector here",  # Поле для суммы перевода
-    "error_message": "css selector here",  # Элемент с сообщением об ошибке
-    "success_message": "css selector here"  # Элемент с сообщением об успехе
+    "balance_field": ".balance",  # Пример: ".balance"
+    "reserved_field": ".reserved",  # Пример: ".reserved"
+    "transfer_button": "#transfer_button",  # Кнопка «Перевести»
+    "card_input": "#card_number",  # Поле для ввода номера карты
+    "amount_input": "#amount",  # Поле для суммы перевода
+    "error_message": ".error-message",  # Элемент с сообщением об ошибке
+    "success_message": ".success-message"  # Элемент с сообщением об успехе
 }
 
 # Режимы работы
