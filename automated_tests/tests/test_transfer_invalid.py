@@ -9,8 +9,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-# 🔽 Импортируем BASE_URL из conftest.py
-from .conftest import BASE_URL
+# 🔽 ОПРЕДЕЛЯЕМ BASE_URL ПРЯМО ЗДЕСЬ (вместо импорта из conftest)
+BASE_URL = os.getenv("APP_BASE_URL", "http://localhost:8000")
 
 # Настройка логирования
 logging.basicConfig(
