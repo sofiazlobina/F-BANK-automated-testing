@@ -16,6 +16,8 @@ jobs:
           pip list | grep pytest
       - name: Run tests
         run: pytest automated_tests/tests/ -v --html=reports/test_report.html --self-contained-html
+        env:
+          APP_BASE_URL: https://staging.f-bank.test
       - name: Upload test reports
         uses: actions/upload-artifact@v4
         with:
