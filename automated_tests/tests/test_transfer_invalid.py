@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-# 🔽 ОПРЕДЕЛЯЕМ BASE_URL ПРЯМО ЗДЕСЬ (вместо импорта из conftest)
+# 🔽 ОПРЕДЕЛЯЕМ BASE_URL ЗДЕСЬ
 BASE_URL = os.getenv("APP_BASE_URL", "http://localhost:8000")
 
 # Настройка логирования
@@ -51,6 +51,9 @@ def test_zero_amount(browser):
     """
     BUG‑001: Система допускает перевод суммы 0 ₽
     """
+    print(f"\n🔍 BASE_URL = '{BASE_URL}'")
+    print(f"🔗 Полный URL = '{BASE_URL}/?balance=30000&reserved=20001'")
+    
     browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
@@ -100,7 +103,7 @@ def test_empty_amount_field(browser):
     """
     BUG‑002: Пустое поле суммы трактуется как 0 ₽
     """
-    # 🔽 Заменено: localhost → BASE_URL
+    print(f"\n🔍 BASE_URL = '{BASE_URL}'")
     browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
@@ -135,7 +138,7 @@ def test_invalid_card_length(browser):
     """
     BUG‑003: Система принимает 17‑значный номер карты
     """
-    # 🔽 Заменено: localhost → BASE_URL
+    print(f"\n🔍 BASE_URL = '{BASE_URL}'")
     browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
@@ -182,7 +185,7 @@ def test_negative_amount(browser):
     """
     BUG‑004: Система допускает отрицательный перевод
     """
-    # 🔽 Заменено: localhost → BASE_URL
+    print(f"\n🔍 BASE_URL = '{BASE_URL}'")
     browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
@@ -244,7 +247,7 @@ def test_incorrect_commission_calculation(browser):
     """
     BUG‑005: Некорректный расчёт комиссии (округление до десятков)
     """
-    # 🔽 Заменено: localhost → BASE_URL
+    print(f"\n🔍 BASE_URL = '{BASE_URL}'")
     browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
