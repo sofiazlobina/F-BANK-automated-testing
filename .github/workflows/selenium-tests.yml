@@ -27,7 +27,7 @@ jobs:
       
       - name: Run tests
         run: pytest automated_tests/tests/ -v --html=reports/test_report.html --self-contained-html
-        continue-on-error: true  # ← Добавьте это
+        continue-on-error: false  # ← Добавьте это
       
       - name: Upload test reports
         if: always()  # ← Измените на always() (было success() или вообще не было)
