@@ -9,12 +9,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
-# 🔽 Импортируем BASE_URL из conftest.py (вместо локального определения)
-from .conftest import BASE_URL
+# 🔽 ОПРЕДЕЛЯЕМ BASE_URL ПРЯМО ЗДЕСЬ (вместо импорта из conftest)
+BASE_URL = os.getenv("APP_BASE_URL", "http://localhost:8000")
 
 # Константы для тестирования
 VALID_CARD = "1111222233334444"
-# 🔽 Удалено: BASE_URL = "http://localhost:8000/..." — теперь импортируется из conftest
 COMMISSION_RATE = 0.1  # 10 %
 
 def save_screenshot_with_context(browser, test_name, context=""):
