@@ -3,7 +3,6 @@ import os
 from selenium import webdriver
 from selenium.webdriver.edge.options import Options
 
-BASE_URL = os.getenv("APP_BASE_URL", "http://localhost:8000")
 
 @pytest.fixture(scope="session")
 def browser():
