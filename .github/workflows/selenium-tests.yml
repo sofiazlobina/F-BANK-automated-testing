@@ -13,23 +13,12 @@ jobs:
           python-version: '3.12'
       
       # 🔽 НОВЫЙ ШАГ: Распаковать и запустить приложение
-      - name: Start F-Bank static server
+      - name: Start F-Bank server
         run: |
-          # Если приложение в архиве — распакуйте его:
-          # unzip path/to/app.zip -d ./app
-          
-          # Если файлы уже в репозитории — перейдите в папку dist:
-          cd dist  # ← замените на путь к вашей папке с индексом
-          
-          # Запустите статический сервер в фоне
+          cd dist  # ← теперь эта папка есть в репозитории!
           python3 -m http.server 8000 &
-          
-          # Ждём, пока сервер поднимется
           sleep 5
-          
-          # Проверяем доступность
           curl -f http://localhost:8000/ || exit 1
-          echo "✅ F-Bank server is running on http://localhost:8000"
       
       - name: Install dependencies
         run: |
