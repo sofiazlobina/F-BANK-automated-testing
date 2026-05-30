@@ -14,10 +14,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt --no-cache-dir --force-reinstall
           pip list | grep pytest
+      # - name: Run tests
+      #   run: pytest automated_tests/tests/ -v --html=reports/test_report.html --self-contained-html
+      #   env:
+      #     APP_BASE_URL: https://staging.f-bank.test
       - name: Run tests
-        run: pytest automated_tests/tests/ -v --html=reports/test_report.html --self-contained-html
+        run: pytest automated_tests/tests/ -v
         env:
-          APP_BASE_URL: https://staging.f-bank.test
+          APP_BASE_URL: https://httpbin.org 
       - name: Upload test reports
         uses: actions/upload-artifact@v4
         with:
