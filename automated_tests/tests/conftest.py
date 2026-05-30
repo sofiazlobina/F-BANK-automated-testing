@@ -1,15 +1,14 @@
 import pytest
 from selenium import webdriver
-from selenium.webdriver.edge.service import Service
 from selenium.webdriver.edge.options import Options
 
 @pytest.fixture(scope="session")
 def browser():
-    # Опции для Edge (если нужно указать путь к браузеру)
     edge_options = Options()
-    service = Service("C:\\Users\\ru-szlobina\\Desktop\\Личное\\F-Bank\\msedgedriver.exe")
-
-    driver = webdriver.Edge(service=service, options=edge_options)
-    driver.implicitly_wait(10)
+    edge_options.add_argument("--headless")
+    edge_options.add_argument("--no-sandbox")
+    edge_options.add_argument("--disable-dev-shm-usage")
+    
+    driver = webdriver.Edge(options=edge_options)
     yield driver
     driver.quit()
