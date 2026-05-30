@@ -1,27 +1,47 @@
 name: Run Selenium Tests
 on: [push]
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      
+      # 🔽 НОВЫЙ ШАГ: Распаковать и запустить приложение
+      - name: Start F-Bank static server
+        run: |
+          # Если приложение в архиве — распакуйте его:
+          # unzip path/to/app.zip -d ./app
+          
+          # Если файлы уже в репозитории — перейдите в папку dist:
+          cd dist  # ← замените на путь к вашей папке с индексом
+          
+          # Запустите статический сервер в фоне
+          python3 -m http.server 8000 &
+          
+          # Ждём, пока сервер поднимется
+          sleep 5
+          
+          # Проверяем доступность
+          curl -f http://localhost:8000/ || exit 1
+          echo "✅ F-Bank server is running on http://localhost:8000"
+      
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt --no-cache-dir --force-reinstall
-          pip list | grep pytest
-      # - name: Run tests
-      #   run: pytest automated_tests/tests/ -v --html=reports/test_report.html --self-contained-html
-      #   env:
-      #     APP_BASE_URL: https://staging.f-bank.test
+          pip install -r requirements.txt --no-cache-dir
+      
       - name: Run tests
-        run: pytest automated_tests/tests/ -v
-        env:
-          APP_BASE_URL: https://httpbin.org 
+        run: pytest automated_tests/tests/ -v --html=reports/test_report.html --self-contained-html
+        # 🔽 УДАЛИТЕ или закомментируйте эту строку, если она есть:
+        # env:
+        #   APP_BASE_URL: https://httpbin.org
+      
       - name: Upload test reports
         uses: actions/upload-artifact@v4
         with:
