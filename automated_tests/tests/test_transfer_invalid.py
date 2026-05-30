@@ -48,7 +48,7 @@ def test_zero_amount(browser):
     """
     BUG‑001: Система допускает перевод суммы 0 ₽
     """
-    browser.get("http://localhost:8000/?balance=30000&reserved=20001")
+    browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
     # Шаг 1: Нажимаем на блок «Рубли»
