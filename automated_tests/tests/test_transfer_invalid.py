@@ -9,6 +9,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
+# 🔽 Импортируем BASE_URL из conftest.py
+from .conftest import BASE_URL
+
 # Настройка логирования
 logging.basicConfig(
     level=logging.INFO,
@@ -97,7 +100,8 @@ def test_empty_amount_field(browser):
     """
     BUG‑002: Пустое поле суммы трактуется как 0 ₽
     """
-    browser.get("http://localhost:8000/?balance=30000&reserved=20001")
+    # 🔽 Заменено: localhost → BASE_URL
+    browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
     rubles_block = find_element_safe(browser, [
@@ -131,7 +135,8 @@ def test_invalid_card_length(browser):
     """
     BUG‑003: Система принимает 17‑значный номер карты
     """
-    browser.get("http://localhost:8000/?balance=30000&reserved=20001")
+    # 🔽 Заменено: localhost → BASE_URL
+    browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
     rubles_block = find_element_safe(browser, [
@@ -177,17 +182,18 @@ def test_negative_amount(browser):
     """
     BUG‑004: Система допускает отрицательный перевод
     """
-    browser.get("http://localhost:8000/?balance=30000&reserved=20001")
+    # 🔽 Заменено: localhost → BASE_URL
+    browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
-    # Шаг 1: Нажимаем на блок «Рубли»
+    # Шаг 1: Нажимаем на блок «Рубли»
     rubles_block = find_element_safe(browser, [
         (By.XPATH, "//div[contains(@class, 'g-card') and .//h2[text()='Рубли']]")
     ])
     rubles_block.click()
     print("Блок «Рубли» активирован")
 
-    # Шаг 2: Вводим номер карты
+    # Шаг 2: Вводим номер карты
     card_input = find_element_safe(browser, [
         (By.XPATH, "//input[@placeholder='0000 0000 0000 0000']")
     ])
@@ -195,22 +201,22 @@ def test_negative_amount(browser):
     card_input.send_keys("1111222233334444")
     print("Номер карты введён")
 
-    # Шаг 3: Вводим отрицательную сумму
+    # Шаг 3: Вводим отрицательную сумму
     amount_input = find_element_safe(browser, [
         (By.XPATH, "//input[@placeholder='1000']")
     ])
     amount_input.clear()
     amount_input.send_keys("-100")
-    print("Введена отрицательная сумма: -100 ₽")
+    print("Введена отрицательная сумма: -100 ₽")
 
-    # Шаг 4: Нажимаем кнопку «Перевести»
+    # Шаг 4: Нажимаем кнопку «Перевести»
     transfer_button = find_element_safe(browser, [
         (By.XPATH, "//button[contains(@class, 'g-button') and .//span[text()='Перевести']]")
     ])
     transfer_button.click()
     print("Кнопка «Перевести» нажата")
 
-    # Шаг 5: Обрабатываем алерт, если появился
+    # Шаг 5: Обрабатываем алерт, если появился
     try:
         alert = WebDriverWait(browser, 5).until(EC.alert_is_present())
         alert_text = alert.text
@@ -238,17 +244,18 @@ def test_incorrect_commission_calculation(browser):
     """
     BUG‑005: Некорректный расчёт комиссии (округление до десятков)
     """
-    browser.get("http://localhost:8000/?balance=30000&reserved=20001")
+    # 🔽 Заменено: localhost → BASE_URL
+    browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
-    # Шаг 1: Нажимаем на блок «Рубли»
+    # Шаг 1: Нажимаем на блок «Рубли»
     rubles_block = find_element_safe(browser, [
         (By.XPATH, "//div[contains(@class, 'g-card') and .//h2[text()='Рубли']]")
     ])
     rubles_block.click()
     print("Блок «Рубли» активирован")
 
-    # Шаг 2: Вводим номер карты
+    # Шаг 2: Вводим номер карты
     card_input = find_element_safe(browser, [
         (By.XPATH, "//input[@placeholder='0000 0000 0000 0000']")
     ])
@@ -256,13 +263,13 @@ def test_incorrect_commission_calculation(browser):
     card_input.send_keys("1111222233334444")
     print("Номер карты введён")
 
-    # Шаг 3: Вводим сумму для расчёта комиссии
+    # Шаг 3: Вводим сумму для расчёта комиссии
     amount_input = find_element_safe(browser, [
         (By.XPATH, "//input[@placeholder='1000']")
     ])
     amount_input.clear()
     amount_input.send_keys("99")
-    print("Введена сумма для расчёта комиссии: 99 ₽")
+    print("Введена сумма для расчёта комиссии: 99 ₽")
 
     # Ждём обновления комиссии
     wait = WebDriverWait(browser, 30)
@@ -272,14 +279,14 @@ def test_incorrect_commission_calculation(browser):
         )
         commission_text = commission_element.text.strip()
         commission = float(commission_text)
-        print(f"Комиссия из интерфейса: {commission} ₽")
+        print(f"Комиссия из интерфейса: {commission} ₽")
     except TimeoutException:
         browser.save_screenshot("commission_element_not_found.png")
-        pytest.fail("Элемент комиссии (#comission) не появился в течение 30 секунд")
+        pytest.fail("Элемент комиссии (#comission) не появился в течение 30 секунд")
 
-    # Ожидаемая комиссия: 9 % от 99 ₽ = 8,91 ₽ (округляем до 9,0 ₽)
+    # Ожидаемая комиссия: 9 % от 99 ₽ = 8,91 ₽ (округляем до 9,0 ₽)
     expected_commission = 9.0
     assert abs(commission - expected_commission) < 0.01, (
-        f"БАГ ПОДТВЕРЖДЁН: комиссия рассчитана неверно. Ожидалось {expected_commission} ₽, получено {commission} ₽"
+        f"БАГ ПОДТВЕРЖДЁН: комиссия рассчитана неверно. Ожидалось {expected_commission} ₽, получено {commission} ₽"
     )
-    print("Баг подтверждён: комиссия = 0 ₽ вместо 9 ₽")
+    print("Баг подтверждён: комиссия = 0 ₽ вместо 9 ₽")
