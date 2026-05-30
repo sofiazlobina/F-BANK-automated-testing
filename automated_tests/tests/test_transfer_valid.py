@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
-# 🔽 ОПРЕДЕЛЯЕМ BASE_URL ПРЯМО ЗДЕСЬ (вместо импорта из conftest)
+# 🔽 ОПРЕДЕЛЯЕМ BASE_URL ЗДЕСЬ
 BASE_URL = os.getenv("APP_BASE_URL", "http://localhost:8000")
 
 # Константы для тестирования
@@ -44,7 +44,7 @@ def test_valid_card_number_validation(browser):
     """
     TC‑009: Валидация корректного 16‑значного номера карты
     """
-    # 🔽 Заменено: localhost → BASE_URL
+    print(f"\n🔍 BASE_URL = '{BASE_URL}'")
     browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
@@ -88,7 +88,7 @@ def test_transfer_maximum_available_amount(browser):
     """
     TC‑007: Перевод суммы, равной максимальной доступной
     """
-    # 🔽 Заменено: localhost → BASE_URL
+    print(f"\n🔍 BASE_URL = '{BASE_URL}'")
     browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
@@ -156,7 +156,7 @@ def test_attempt_transfer_over_limit(browser):
     """
     TC‑008: Попытка перевода сверх доступной суммы
     """
-    # 🔽 Заменено: localhost → BASE_URL
+    print(f"\n🔍 BASE_URL = '{BASE_URL}'")
     browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
@@ -210,7 +210,7 @@ def test_invalid_card_number_length_validation(browser):
     """
     TC‑009: Валидация номера карты с некорректной длиной
     """
-    # 🔽 Заменено: localhost → BASE_URL
+    print(f"\n🔍 BASE_URL = '{BASE_URL}'")
     browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
@@ -261,7 +261,7 @@ def test_empty_amount_transfer_validation(browser):
     """
     TC‑010: Проверка обработки пустой суммы перевода
     """
-    # 🔽 Заменено: localhost → BASE_URL
+    print(f"\n🔍 BASE_URL = '{BASE_URL}'")
     browser.get(f"{BASE_URL}/?balance=30000&reserved=20001")
     print("Страница загружена")
 
